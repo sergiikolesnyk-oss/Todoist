@@ -30,3 +30,6 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# local agent / editor config
+.claude/
