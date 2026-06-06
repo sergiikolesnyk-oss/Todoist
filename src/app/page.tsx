@@ -70,15 +70,15 @@ export default function CapturePage() {
   return (
     <section className="capture">
       <header className="capture__header">
-        <h1 className="capture__title">Що в голові?</h1>
+        <h1 className="capture__title">What&apos;s on your mind?</h1>
         <p className="capture__hint">
-          Вивантаж усе підряд — структуруємо пізніше.
+          Brain-dump it all — we&apos;ll structure it later.
         </p>
       </header>
 
       <textarea
         className="capture__input"
-        placeholder="Почни писати… кожен рядок стане окремою задачею"
+        placeholder="Start typing… each line becomes a task"
         value={text}
         onChange={(e) => setText(e.target.value)}
         autoFocus
@@ -86,16 +86,15 @@ export default function CapturePage() {
 
       {micUnsupported ? (
         <p className="capture__note">
-          🎙️ Голосовий ввід не підтримується в цьому браузері. Спробуй Chrome,
-          Edge або Safari.
+          🎙️ Voice input isn&apos;t supported in this browser. Try Chrome, Edge,
+          or Safari.
         </p>
       ) : error === 'denied' ? (
         <p className="capture__note">
-          🚫 Доступ до мікрофона заборонено. Дозволь його в налаштуваннях
-          браузера.
+          🚫 Microphone access denied. Allow it in your browser settings.
         </p>
       ) : recording ? (
-        <p className="capture__note capture__note--live">● Слухаю… говори</p>
+        <p className="capture__note capture__note--live">● Listening…</p>
       ) : null}
 
       <div className="capture__actions">
@@ -104,9 +103,9 @@ export default function CapturePage() {
           className="lang-toggle"
           onClick={toggleLang}
           disabled={micUnsupported}
-          aria-label={`Мова розпізнавання: ${
-            lang === 'uk-UA' ? 'українська' : 'англійська'
-          }. Натисни, щоб змінити.`}
+          aria-label={`Recognition language: ${
+            lang === 'uk-UA' ? 'Ukrainian' : 'English'
+          }. Tap to change.`}
         >
           {lang === 'uk-UA' ? 'UA' : 'EN'}
         </button>
@@ -119,7 +118,7 @@ export default function CapturePage() {
           onPointerLeave={handleMicUp}
           onPointerCancel={handleMicUp}
           disabled={micUnsupported}
-          aria-label="Затисни й говори"
+          aria-label="Hold and speak"
         >
           🎙️
         </button>
@@ -130,7 +129,7 @@ export default function CapturePage() {
           onClick={handleSave}
           disabled={!hasText || saving}
         >
-          {saving ? 'Структурую…' : 'Зберегти в Inbox'}
+          {saving ? 'Structuring…' : 'Save to Inbox'}
         </button>
       </div>
     </section>

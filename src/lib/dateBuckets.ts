@@ -32,13 +32,18 @@ export function isOverdue(deadline: string, today: string): boolean {
   return daysUntil(deadline, today) < 0;
 }
 
+const MONTHS = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+];
+
 // Людський підпис дедлайну для картки.
 export function formatDeadline(deadline: string, today: string): string {
   const diff = daysUntil(deadline, today);
-  if (diff === 0) return 'Сьогодні';
-  if (diff === 1) return 'Завтра';
-  if (diff === -1) return 'Вчора';
-  if (diff < 0) return `${-diff} дн. тому`;
-  const [y, m, d] = deadline.split('-');
-  return `${d}.${m}.${y.slice(2)}`;
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  if (diff === -1) return 'Yesterday';
+  if (diff < 0) return `${-diff} days ago`;
+  const [, m, d] = deadline.split('-');
+  return `${MONTHS[Number(m) - 1]} ${Number(d)}`;
 }

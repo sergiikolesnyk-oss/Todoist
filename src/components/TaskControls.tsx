@@ -9,9 +9,9 @@ const CATEGORIES: { value: Category; label: string }[] = [
 ];
 
 const PRIORITIES: { value: Priority; label: string }[] = [
-  { value: 'low', label: 'Низький' },
-  { value: 'medium', label: 'Середній' },
-  { value: 'high', label: 'Високий' },
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
 ];
 
 export default function TaskControls({ task }: { task: Task }) {
@@ -26,10 +26,10 @@ export default function TaskControls({ task }: { task: Task }) {
         onChange={(e) =>
           updateTask(task.id, { deadline: e.target.value || undefined })
         }
-        aria-label="Дедлайн"
+        aria-label="Deadline"
       />
 
-      <div className="control-group" role="group" aria-label="Категорія">
+      <div className="control-group" role="group" aria-label="Category">
         {CATEGORIES.map((c) => (
           <button
             key={c.value}
@@ -46,7 +46,7 @@ export default function TaskControls({ task }: { task: Task }) {
         ))}
       </div>
 
-      <div className="control-group" role="group" aria-label="Пріоритет">
+      <div className="control-group" role="group" aria-label="Priority">
         {PRIORITIES.map((p) => (
           <button
             key={p.value}

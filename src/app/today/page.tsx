@@ -19,9 +19,9 @@ const TABS: { value: Bucket; label: string }[] = [
 ];
 
 const EMPTY: Record<Bucket, string> = {
-  today: 'На сьогодні нічого. Признач дедлайни в Inbox.',
-  week: 'На цей тиждень порожньо.',
-  month: 'Далі по місяцю порожньо.',
+  today: 'Nothing for today. Set deadlines in Inbox.',
+  week: 'Nothing this week.',
+  month: 'Nothing further out.',
 };
 
 export default function TodayPage() {
@@ -41,12 +41,12 @@ export default function TodayPage() {
         <h1 className="list__title">Today</h1>
         <p className="list__sub">
           {inBucket.length > 0
-            ? `${doneCount}/${inBucket.length} виконано`
-            : 'Задачі за датами'}
+            ? `${doneCount}/${inBucket.length} done`
+            : 'Tasks by date'}
         </p>
       </header>
 
-      <div className="segmented" role="tablist" aria-label="Період">
+      <div className="segmented" role="tablist" aria-label="Period">
         {TABS.map((t) => (
           <button
             key={t.value}
@@ -88,7 +88,7 @@ export default function TodayPage() {
                     type="button"
                     className="chip chip--ghost"
                     onClick={() => removeTask(task.id)}
-                    aria-label="Видалити задачу"
+                    aria-label="Delete task"
                   >
                     ✕
                   </button>

@@ -13,7 +13,7 @@ export default function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="tabbar" aria-label="Головна навігація">
+    <nav className="tabbar" aria-label="Main navigation">
       {tabs.map((tab) => {
         const active = pathname === tab.href;
         return (

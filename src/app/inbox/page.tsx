@@ -16,11 +16,11 @@ export default function InboxPage() {
     <section className="list">
       <header className="list__header">
         <h1 className="list__title">Inbox</h1>
-        <p className="list__sub">Признач дедлайн, категорію, пріоритет</p>
+        <p className="list__sub">Set deadline, category, priority</p>
       </header>
 
       {!ready ? null : inbox.length === 0 ? (
-        <EmptyState icon="📥" text="Поки порожньо. Почни з екрана Capture." />
+        <EmptyState icon="📥" text="Nothing yet. Start from Capture." />
       ) : (
         <ul className="cards">
           {inbox.map((task) => {
@@ -33,7 +33,7 @@ export default function InboxPage() {
                     type="button"
                     className="chip chip--ghost"
                     onClick={() => removeTask(task.id)}
-                    aria-label="Видалити задачу"
+                    aria-label="Delete task"
                   >
                     ✕
                   </button>
@@ -45,7 +45,7 @@ export default function InboxPage() {
                     className="suggest"
                     onClick={() => updateTask(task.id, { deadline: suggested })}
                   >
-                    📅 Призначити дедлайн: {formatDeadline(suggested, today)}
+                    📅 Set deadline: {formatDeadline(suggested, today)}
                   </button>
                 )}
 
