@@ -508,7 +508,167 @@ button {
   background: rgba(76, 217, 100, 0.08);
 }
 
-/* Крапка-статус у перемикачі */
+.badge--video {
+  color: var(--today);
+  border-color: rgba(255, 93, 93, 0.4);
+  background: rgba(255, 93, 93, 0.08);
+}
+
+.badge--article {
+  color: var(--accent);
+  border-color: rgba(58, 214, 164, 0.4);
+  background: rgba(58, 214, 164, 0.08);
+}
+
+/* ---------- Пінована картка «Learn AI» ---------- */
+
+.pinned {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(58, 214, 164, 0.22);
+  background: rgba(58, 214, 164, 0.035);
+}
+
+.pinned__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pinned__label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10px;
+  color: var(--accent);
+}
+
+.pinned__title {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.pinned__title svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin-top: 3px;
+  opacity: 0.7;
+}
+
+.pinned__title:hover {
+  color: var(--accent);
+}
+
+.pinned__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pinned__source {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.pinned__shuffle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--hair);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pinned__shuffle svg {
+  width: 14px;
+  height: 14px;
+}
+
+.pinned__shuffle:active {
+  transform: scale(0.97);
+}
+
+/* Фільтр категорій (All / Work / Personal) */
+.catfilter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.catpill {
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid var(--hair);
+  background: var(--panel);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  font-weight: 600;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.catpill--on {
+  background: rgba(58, 214, 164, 0.14);
+  border-color: rgba(58, 214, 164, 0.5);
+  color: var(--accent);
+}
+
+.catpill:active {
+  transform: scale(0.96);
+}
+
+/* Заголовок групи пріоритету */
+.group__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 2px 10px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.group__head + .cards {
+  margin-bottom: 8px;
+}
+
+.cards + .group__head {
+  margin-top: 18px;
+}
+
+.group__count {
+  color: var(--muted);
+}
+
+/* Крапка-статус у перемикачі / групах */
 .dot {
   width: 7px;
   height: 7px;
@@ -525,6 +685,12 @@ button {
 }
 .dot--month {
   background: var(--month);
+}
+.dot--high {
+  background: var(--today);
+}
+.dot--other {
+  background: rgba(255, 255, 255, 0.32);
 }
 
 /* Чекбокс (квадратний, outline) */
