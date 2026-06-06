@@ -5,15 +5,19 @@ import { LEARN_SOURCES } from '@/lib/learnSources';
 import { RefreshIcon, ExternalIcon } from '@/components/icons';
 
 export default function PinnedLearn() {
-  // Випадковий вибір лише на клієнті (уникаємо SSR-розбіжності).
-  const [idx, setIdx] = useState<number | null>(null);
+  // Стартуємо з детермінованого індексу (картка видна одразу, без SSR-розбіжності),
+  // потім на клієнті обираємо випадкове джерело.
+  const [idx, setIdx] = useState(0);
 
   useEffect(() => {
     setIdx(Math.floor(Math.random() * LEARN_SOURCES.length));
   }, []);
 
-  if (idx === null) return null;
   const item = LEARN_SOURCES[idx];
+
+  function open() {
+    window.open(item.url, '_blank', 'noopener,noreferrer');
+  }
 
   function shuffle() {
     if (LEARN_SOURCES.length < 2) return;
@@ -25,7 +29,18 @@ export default function PinnedLearn() {
   }
 
   return (
-    <div className="pinned">
+    <div
+      className="pinned"
+      role="link"
+      tabIndex={0}
+      onClick={open}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          open();
+        }
+      }}
+    >
       <div className="pinned__head">
         <span className="pinned__label">Pinned · Learn AI</span>
         <span className={`badge badge--${item.type}`}>
@@ -33,22 +48,20 @@ export default function PinnedLearn() {
         </span>
       </div>
 
-      <a
-        className="pinned__title"
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <div className="pinned__title">
         <ExternalIcon />
         {item.title}
-      </a>
+      </div>
 
       <div className="pinned__foot">
         <span className="pinned__source">{item.source}</span>
         <button
           type="button"
           className="pinned__shuffle"
-          onClick={shuffle}
+          onClick={(e) => {
+            e.stopPropagation();
+            shuffle();
+          }}
           aria-label="Shuffle recommendation"
         >
           <RefreshIcon />

@@ -12,7 +12,7 @@
   --panel-strong: rgba(255, 255, 255, 0.045);
 
   /* Акценти */
-  --accent: #3ad6a4; /* teal-green / on-track / active */
+  --accent: #2fe6a0; /* vivid green / on-track / active */
   --accent-ink: #04130d;
   --today: #ff5d5d; /* red */
   --week: #f5c451; /* amber */
@@ -220,9 +220,9 @@ button {
   width: 100%;
   min-height: 220px;
   resize: none;
-  border: 1px solid var(--hair);
+  border: 1px solid rgba(47, 230, 160, 0.2);
   outline: none;
-  background: var(--panel);
+  background: rgba(47, 230, 160, 0.03);
   border-radius: var(--radius);
   padding: 18px;
   font-size: 16px;
@@ -231,8 +231,8 @@ button {
 }
 
 .capture__input:focus {
-  border-color: rgba(58, 214, 164, 0.5);
-  box-shadow: 0 0 0 3px rgba(58, 214, 164, 0.15);
+  border-color: rgba(47, 230, 160, 0.5);
+  box-shadow: 0 0 0 3px rgba(47, 230, 160, 0.15);
 }
 
 .capture__input::placeholder {
@@ -516,8 +516,8 @@ button {
 
 .badge--article {
   color: var(--accent);
-  border-color: rgba(58, 214, 164, 0.4);
-  background: rgba(58, 214, 164, 0.08);
+  border-color: rgba(47, 230, 160, 0.4);
+  background: rgba(47, 230, 160, 0.08);
 }
 
 /* ---------- Пінована картка «Learn AI» ---------- */
@@ -529,8 +529,20 @@ button {
   padding: 16px 18px;
   margin-bottom: 18px;
   border-radius: var(--radius);
-  border: 1px solid rgba(58, 214, 164, 0.22);
-  background: rgba(58, 214, 164, 0.035);
+  border: 1px solid rgba(47, 230, 160, 0.22);
+  background: rgba(47, 230, 160, 0.035);
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pinned:hover {
+  border-color: rgba(47, 230, 160, 0.45);
+  background: rgba(47, 230, 160, 0.06);
+}
+
+.pinned:active {
+  transform: scale(0.995);
 }
 
 .pinned__head {
@@ -634,8 +646,8 @@ button {
 }
 
 .catpill--on {
-  background: rgba(58, 214, 164, 0.14);
-  border-color: rgba(58, 214, 164, 0.5);
+  background: rgba(47, 230, 160, 0.14);
+  border-color: rgba(47, 230, 160, 0.5);
   color: var(--accent);
 }
 
@@ -788,8 +800,8 @@ button {
   min-height: 38px;
   padding: 0 12px;
   border-radius: 8px;
-  border: 1px dashed rgba(58, 214, 164, 0.55);
-  background: rgba(58, 214, 164, 0.06);
+  border: 1px dashed rgba(47, 230, 160, 0.55);
+  background: rgba(47, 230, 160, 0.06);
   color: var(--accent);
   font-family: var(--font-mono);
   text-transform: uppercase;
@@ -888,8 +900,8 @@ button {
 }
 
 .tag--on {
-  background: rgba(58, 214, 164, 0.14);
-  border-color: rgba(58, 214, 164, 0.5);
+  background: rgba(47, 230, 160, 0.14);
+  border-color: rgba(47, 230, 160, 0.5);
   color: var(--accent);
 }
 

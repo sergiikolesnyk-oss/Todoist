@@ -97,7 +97,7 @@ export default function TodayPage() {
   return (
     <section className="list">
       <header className="list__header">
-        <h1 className="list__title">Today</h1>
+        <h1 className="list__title">Tasks</h1>
         <p className="list__sub">
           {inBucket.length > 0
             ? `${doneCount}/${inBucket.length} done`

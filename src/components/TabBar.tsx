@@ -8,7 +8,7 @@ import { CaptureIcon, InboxIcon, CalendarIcon } from './icons';
 const tabs: { href: string; label: string; icon: ReactNode }[] = [
   { href: '/', label: 'Capture', icon: <CaptureIcon /> },
   { href: '/inbox', label: 'Inbox', icon: <InboxIcon /> },
-  { href: '/today', label: 'Today', icon: <CalendarIcon /> },
+  { href: '/today', label: 'Tasks', icon: <CalendarIcon /> },
 ];
 
 export default function TabBar() {
