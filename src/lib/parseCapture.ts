@@ -2,16 +2,22 @@
 // Якщо AI недоступний (немає ключа / мережа / помилка) — фолбек на просте
 // розбиття по рядках, щоб користувач НІКОЛИ не втрачав введене.
 
+export type ParsedTask = {
+  title: string;
+  deadline?: string; // 'YYYY-MM-DD', якщо AI його витяг
+};
+
 export type ParseResult = {
-  tasks: string[];
+  tasks: ParsedTask[];
   usedAI: boolean;
 };
 
-function naiveSplit(text: string): string[] {
+function naiveSplit(text: string): ParsedTask[] {
   return text
     .split('\n')
     .map((line) => line.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((title) => ({ title }));
 }
 
 export async function parseCapture(text: string): Promise<ParseResult> {
@@ -27,10 +33,18 @@ export async function parseCapture(text: string): Promise<ParseResult> {
     if (!res.ok) throw new Error(`status ${res.status}`);
 
     const data = (await res.json()) as { tasks?: unknown };
-    const tasks = Array.isArray(data.tasks)
-      ? data.tasks.filter(
-          (t): t is string => typeof t === 'string' && t.trim().length > 0
-        )
+    const tasks: ParsedTask[] = Array.isArray(data.tasks)
+      ? data.tasks
+          .map((t) => {
+            const obj = t as { title?: unknown; deadline?: unknown };
+            const title = typeof obj?.title === 'string' ? obj.title.trim() : '';
+            const deadline =
+              typeof obj?.deadline === 'string' && obj.deadline
+                ? obj.deadline
+                : undefined;
+            return { title, deadline };
+          })
+          .filter((t) => t.title.length > 0)
       : [];
 
     if (tasks.length === 0) throw new Error('empty result');

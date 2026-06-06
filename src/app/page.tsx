@@ -59,9 +59,9 @@ export default function CapturePage() {
   async function handleSave() {
     if (!hasText || saving) return;
     setSaving(true);
-    // AI структурує сирий текст у чіткі задачі (з фолбеком, якщо недоступний).
+    // AI структурує сирий текст у чіткі задачі + дедлайни (з фолбеком, якщо недоступний).
     const { tasks } = await parseCapture(text);
-    tasks.forEach(addTask);
+    tasks.forEach((t) => addTask(t.title, { deadline: t.deadline }));
     setText('');
     setSaving(false);
     router.push('/inbox');

@@ -12,12 +12,14 @@ import type { Task } from './types';
 
 const STORAGE_KEY = 'ai-planner.tasks.v1';
 
+type TaskInput = Pick<Task, 'deadline' | 'category' | 'priority'>;
+
 type TasksContextValue = {
   tasks: Task[];
   ready: boolean;
-  addTask: (title: string) => void;
+  addTask: (title: string, opts?: Partial<TaskInput>) => void;
+  updateTask: (id: string, patch: Partial<TaskInput>) => void;
   toggleDone: (id: string) => void;
-  toggleToday: (id: string) => void;
   removeTask: (id: string) => void;
 };
 
@@ -35,6 +37,7 @@ export function TasksProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   // Завантажуємо з localStorage один раз на старті (тільки в браузері).
+  // Старі задачі могли мати поле `today` — воно просто ігнорується.
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -55,24 +58,32 @@ export function TasksProvider({ children }: { children: ReactNode }) {
     }
   }, [tasks, ready]);
 
-  const addTask = useCallback((title: string) => {
+  const addTask = useCallback((title: string, opts?: Partial<TaskInput>) => {
     const t = title.trim();
     if (!t) return;
     setTasks((prev) => [
-      { id: newId(), title: t, done: false, today: false, createdAt: Date.now() },
+      {
+        id: newId(),
+        title: t,
+        done: false,
+        createdAt: Date.now(),
+        deadline: opts?.deadline,
+        category: opts?.category,
+        priority: opts?.priority,
+      },
       ...prev,
     ]);
+  }, []);
+
+  const updateTask = useCallback((id: string, patch: Partial<TaskInput>) => {
+    setTasks((prev) =>
+      prev.map((x) => (x.id === id ? { ...x, ...patch } : x))
+    );
   }, []);
 
   const toggleDone = useCallback((id: string) => {
     setTasks((prev) =>
       prev.map((x) => (x.id === id ? { ...x, done: !x.done } : x))
-    );
-  }, []);
-
-  const toggleToday = useCallback((id: string) => {
-    setTasks((prev) =>
-      prev.map((x) => (x.id === id ? { ...x, today: !x.today, done: false } : x))
     );
   }, []);
 
@@ -82,7 +93,7 @@ export function TasksProvider({ children }: { children: ReactNode }) {
 
   return (
     <TasksContext.Provider
-      value={{ tasks, ready, addTask, toggleDone, toggleToday, removeTask }}
+      value={{ tasks, ready, addTask, updateTask, toggleDone, removeTask }}
     >
       {children}
     </TasksContext.Provider>

@@ -17,6 +17,8 @@ const SYSTEM = `Ти — асистент, що перетворює сире «
 - НЕ вигадуй задач, яких не було. Якщо в тексті немає жодної задачі — поверни порожній список.
 - Не додавай нумерації, пояснень чи зайвої пунктуації — лише суть дії.
 
+Дедлайн: якщо в тексті є згадка часу («завтра», «до пʼятниці», «наступного тижня», «15 числа»), обчисли конкретну дату відносно сьогоднішньої і поверни її у форматі YYYY-MM-DD. Якщо дати не згадано — поверни deadline = null. Не вигадуй дедлайнів.
+
 Поверни результат виключно через інструмент save_tasks.`;
 
 const TASKS_TOOL: Anthropic.Tool = {
@@ -27,8 +29,21 @@ const TASKS_TOOL: Anthropic.Tool = {
     properties: {
       tasks: {
         type: 'array',
-        items: { type: 'string' },
-        description: 'Список окремих задач, кожна — коротка чітка дія.',
+        description: 'Список окремих задач.',
+        items: {
+          type: 'object',
+          properties: {
+            title: {
+              type: 'string',
+              description: 'Коротка чітка дія.',
+            },
+            deadline: {
+              type: ['string', 'null'],
+              description: 'Дата у форматі YYYY-MM-DD, або null якщо часу не згадано.',
+            },
+          },
+          required: ['title', 'deadline'],
+        },
       },
     },
     required: ['tasks'],
@@ -54,6 +69,7 @@ export async function POST(req: Request) {
   }
 
   const client = new Anthropic({ apiKey });
+  const today = new Date().toISOString().slice(0, 10);
 
   try {
     const response = await client.messages.create({
@@ -64,7 +80,9 @@ export async function POST(req: Request) {
       ],
       tools: [TASKS_TOOL],
       tool_choice: { type: 'tool', name: 'save_tasks' },
-      messages: [{ role: 'user', content: text }],
+      messages: [
+        { role: 'user', content: `Сьогоднішня дата: ${today}.\n\n${text}` },
+      ],
     });
 
     const toolUse = response.content.find(
@@ -72,7 +90,18 @@ export async function POST(req: Request) {
     );
     const raw = (toolUse?.input as { tasks?: unknown })?.tasks;
     const tasks = Array.isArray(raw)
-      ? raw.filter((t): t is string => typeof t === 'string' && t.trim().length > 0)
+      ? raw
+          .map((t) => {
+            const obj = t as { title?: unknown; deadline?: unknown };
+            const title = typeof obj?.title === 'string' ? obj.title.trim() : '';
+            const deadline =
+              typeof obj?.deadline === 'string' &&
+              /^\d{4}-\d{2}-\d{2}$/.test(obj.deadline)
+                ? obj.deadline
+                : null;
+            return { title, deadline };
+          })
+          .filter((t) => t.title.length > 0)
       : [];
 
     return NextResponse.json({ tasks });
