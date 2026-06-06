@@ -9,14 +9,11 @@ import {
   bucketFor,
   isOverdue,
   formatDeadline,
+  BUCKET_META,
   type Bucket,
 } from '@/lib/dateBuckets';
 
-const TABS: { value: Bucket; label: string }[] = [
-  { value: 'today', label: 'Today' },
-  { value: 'week', label: 'Week' },
-  { value: 'month', label: 'Month' },
-];
+const TABS: Bucket[] = ['today', 'week', 'month'];
 
 const EMPTY: Record<Bucket, string> = {
   today: 'Nothing for today. Set deadlines in Inbox.',
@@ -49,14 +46,15 @@ export default function TodayPage() {
       <div className="segmented" role="tablist" aria-label="Period">
         {TABS.map((t) => (
           <button
-            key={t.value}
+            key={t}
             type="button"
             role="tab"
-            aria-selected={tab === t.value}
-            className={`segmented__btn${tab === t.value ? ' segmented__btn--on' : ''}`}
-            onClick={() => setTab(t.value)}
+            aria-selected={tab === t}
+            className={`segmented__btn${tab === t ? ' segmented__btn--on' : ''}`}
+            onClick={() => setTab(t)}
           >
-            {t.label}
+            <span className={`dot dot--${t}`} aria-hidden />
+            {BUCKET_META[t].tab}
           </button>
         ))}
       </div>
@@ -94,8 +92,17 @@ export default function TodayPage() {
                   </button>
                 </div>
 
-                <div className={`deadline${overdue && !task.done ? ' deadline--overdue' : ''}`}>
-                  📅 {formatDeadline(task.deadline!, today)}
+                <div className="meta-row">
+                  <span className={`badge badge--${tab}`}>
+                    {BUCKET_META[tab].label}
+                  </span>
+                  <span
+                    className={`deadline${
+                      overdue && !task.done ? ' deadline--overdue' : ''
+                    }`}
+                  >
+                    {formatDeadline(task.deadline!, today)}
+                  </span>
                 </div>
 
                 <TaskControls task={task} />

@@ -3,6 +3,12 @@
 
 export type Bucket = 'today' | 'week' | 'month';
 
+export const BUCKET_META: Record<Bucket, { label: string; tab: string }> = {
+  today: { label: 'TODAY', tab: 'Today' },
+  week: { label: 'THIS WEEK', tab: 'Week' },
+  month: { label: 'THIS MONTH', tab: 'Month' },
+};
+
 export function todayISO(): string {
   const d = new Date();
   const y = d.getFullYear();
