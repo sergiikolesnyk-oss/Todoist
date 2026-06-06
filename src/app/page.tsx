@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTasks } from '@/lib/store';
 import { useSpeechInput, type SpeechLang } from '@/lib/useSpeechInput';
+import { parseCapture } from '@/lib/parseCapture';
 
 const LANG_KEY = 'ai-planner.speechLang.v1';
 
@@ -12,6 +13,7 @@ export default function CapturePage() {
   const router = useRouter();
   const [text, setText] = useState('');
   const [lang, setLang] = useState<SpeechLang>('uk-UA');
+  const [saving, setSaving] = useState(false);
 
   // Текст, який був у полі на момент натискання мікрофона —
   // розпізнане дописуємо після нього.
@@ -54,16 +56,14 @@ export default function CapturePage() {
     if (recording) stop();
   }
 
-  function handleSave() {
-    if (!hasText) return;
-    // Поки що БЕЗ AI: кожен непорожній рядок стає окремою задачею в Inbox.
-    text
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .forEach(addTask);
-
+  async function handleSave() {
+    if (!hasText || saving) return;
+    setSaving(true);
+    // AI структурує сирий текст у чіткі задачі (з фолбеком, якщо недоступний).
+    const { tasks } = await parseCapture(text);
+    tasks.forEach(addTask);
     setText('');
+    setSaving(false);
     router.push('/inbox');
   }
 
@@ -128,9 +128,9 @@ export default function CapturePage() {
           type="button"
           className="btn btn--primary"
           onClick={handleSave}
-          disabled={!hasText}
+          disabled={!hasText || saving}
         >
-          Зберегти в Inbox
+          {saving ? 'Структурую…' : 'Зберегти в Inbox'}
         </button>
       </div>
     </section>
