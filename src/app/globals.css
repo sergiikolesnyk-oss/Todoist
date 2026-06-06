@@ -174,11 +174,76 @@ button {
   justify-content: center;
   box-shadow: 0 8px 20px rgba(47, 107, 255, 0.35);
   transition: transform 0.08s ease, background 0.15s ease;
+  /* push-to-talk: без виділення тексту й скролу під час утримання */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
 }
 
 .mic:active {
   transform: scale(0.94);
   background: var(--accent-press);
+}
+
+.mic:disabled {
+  opacity: 0.4;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Активний запис: червона кнопка + пульсація */
+.mic--recording,
+.mic--recording:active {
+  background: var(--danger);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+  animation: mic-pulse 1.2s ease-out infinite;
+}
+
+@keyframes mic-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 18px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* Тогл мови розпізнавання (UA / EN) */
+.lang-toggle {
+  flex: 0 0 auto;
+  min-width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.lang-toggle:active {
+  transform: scale(0.96);
+}
+
+.lang-toggle:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Підказки під полем (статус запису / помилки) */
+.capture__note {
+  margin: 12px 2px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.capture__note--live {
+  color: var(--danger);
+  font-weight: 600;
 }
 
 /* ---------- Кнопки ---------- */

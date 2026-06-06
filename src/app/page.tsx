@@ -1,20 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTasks } from '@/lib/store';
+import { useSpeechInput, type SpeechLang } from '@/lib/useSpeechInput';
+
+const LANG_KEY = 'ai-planner.speechLang.v1';
 
 export default function CapturePage() {
   const { addTask } = useTasks();
   const router = useRouter();
   const [text, setText] = useState('');
+  const [lang, setLang] = useState<SpeechLang>('uk-UA');
+
+  // Текст, який був у полі на момент натискання мікрофона —
+  // розпізнане дописуємо після нього.
+  const baseRef = useRef('');
 
   const hasText = text.trim().length > 0;
+
+  // Завантажуємо збережену мову розпізнавання один раз на старті.
+  useEffect(() => {
+    const saved = window.localStorage.getItem(LANG_KEY);
+    if (saved === 'uk-UA' || saved === 'en-US') setLang(saved);
+  }, []);
+
+  const { supported, recording, error, start, stop } = useSpeechInput({
+    lang,
+    onTranscript: (t) => {
+      const base = baseRef.current;
+      setText(base + (base.trim() ? '\n' : '') + t);
+    },
+  });
+
+  const micUnsupported = supported === false;
+
+  function toggleLang() {
+    setLang((prev) => {
+      const next: SpeechLang = prev === 'uk-UA' ? 'en-US' : 'uk-UA';
+      window.localStorage.setItem(LANG_KEY, next);
+      return next;
+    });
+  }
+
+  function handleMicDown(e: React.PointerEvent) {
+    if (micUnsupported) return;
+    e.preventDefault(); // не даємо полю втратити фокус / сторінці скролитись
+    baseRef.current = text;
+    start();
+  }
+
+  function handleMicUp() {
+    if (recording) stop();
+  }
 
   function handleSave() {
     if (!hasText) return;
     // Поки що БЕЗ AI: кожен непорожній рядок стає окремою задачею в Inbox.
-    // Згодом тут буде парсинг через AI.
     text
       .split('\n')
       .map((line) => line.trim())
@@ -23,11 +65,6 @@ export default function CapturePage() {
 
     setText('');
     router.push('/inbox');
-  }
-
-  function handleMic() {
-    // Заглушка: голосовий ввід додамо пізніше.
-    alert('🎙️ Голосовий ввід зʼявиться в наступній версії.');
   }
 
   return (
@@ -47,12 +84,42 @@ export default function CapturePage() {
         autoFocus
       />
 
+      {micUnsupported ? (
+        <p className="capture__note">
+          🎙️ Голосовий ввід не підтримується в цьому браузері. Спробуй Chrome,
+          Edge або Safari.
+        </p>
+      ) : error === 'denied' ? (
+        <p className="capture__note">
+          🚫 Доступ до мікрофона заборонено. Дозволь його в налаштуваннях
+          браузера.
+        </p>
+      ) : recording ? (
+        <p className="capture__note capture__note--live">● Слухаю… говори</p>
+      ) : null}
+
       <div className="capture__actions">
         <button
           type="button"
-          className="mic"
-          onClick={handleMic}
-          aria-label="Диктувати голосом"
+          className="lang-toggle"
+          onClick={toggleLang}
+          disabled={micUnsupported}
+          aria-label={`Мова розпізнавання: ${
+            lang === 'uk-UA' ? 'українська' : 'англійська'
+          }. Натисни, щоб змінити.`}
+        >
+          {lang === 'uk-UA' ? 'UA' : 'EN'}
+        </button>
+
+        <button
+          type="button"
+          className={`mic${recording ? ' mic--recording' : ''}`}
+          onPointerDown={handleMicDown}
+          onPointerUp={handleMicUp}
+          onPointerLeave={handleMicUp}
+          onPointerCancel={handleMicUp}
+          disabled={micUnsupported}
+          aria-label="Затисни й говори"
         >
           🎙️
         </button>
