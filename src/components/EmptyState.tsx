@@ -1,8 +1,10 @@
+import type { ReactNode } from 'react';
+
 export default function EmptyState({
   icon,
   text,
 }: {
-  icon: string;
+  icon: ReactNode;
   text: string;
 }) {
   return (

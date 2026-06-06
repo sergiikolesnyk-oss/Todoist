@@ -3,6 +3,7 @@
 import { useTasks } from '@/lib/store';
 import EmptyState from '@/components/EmptyState';
 import TaskControls from '@/components/TaskControls';
+import { InboxIcon, CloseIcon } from '@/components/icons';
 import { detectDeadline } from '@/lib/detectDeadline';
 import { todayISO, formatDeadline } from '@/lib/dateBuckets';
 
@@ -20,7 +21,7 @@ export default function InboxPage() {
       </header>
 
       {!ready ? null : inbox.length === 0 ? (
-        <EmptyState icon="📥" text="Nothing yet. Start from Capture." />
+        <EmptyState icon={<InboxIcon />} text="Nothing yet. Start from Capture." />
       ) : (
         <ul className="cards">
           {inbox.map((task) => {
@@ -35,7 +36,7 @@ export default function InboxPage() {
                     onClick={() => removeTask(task.id)}
                     aria-label="Delete task"
                   >
-                    ✕
+                    <CloseIcon />
                   </button>
                 </div>
 
@@ -45,7 +46,7 @@ export default function InboxPage() {
                     className="suggest"
                     onClick={() => updateTask(task.id, { deadline: suggested })}
                   >
-                    📅 Set deadline: {formatDeadline(suggested, today)}
+                    Set deadline: {formatDeadline(suggested, today)}
                   </button>
                 )}
 

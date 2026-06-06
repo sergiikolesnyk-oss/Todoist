@@ -87,15 +87,17 @@ export default function CapturePage() {
 
       {micUnsupported ? (
         <p className="capture__note">
-          🎙️ Voice input isn&apos;t supported in this browser. Try Chrome, Edge,
-          or Safari.
+          Voice input isn&apos;t supported in this browser. Try Chrome, Edge, or
+          Safari.
         </p>
       ) : error === 'denied' ? (
         <p className="capture__note">
-          🚫 Microphone access denied. Allow it in your browser settings.
+          Microphone access denied. Allow it in your browser settings.
         </p>
       ) : recording ? (
-        <p className="capture__note capture__note--live">● Listening…</p>
+        <p className="capture__note capture__note--live">
+          <span className="rec-dot" aria-hidden /> Listening…
+        </p>
       ) : null}
 
       <div className="capture__actions">

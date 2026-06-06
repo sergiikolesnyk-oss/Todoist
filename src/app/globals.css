@@ -368,6 +368,27 @@ button {
   color: var(--danger);
 }
 
+.rec-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+  margin-right: 7px;
+  vertical-align: middle;
+  animation: rec-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes rec-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
 /* ---------- Списки (Inbox / Today) ---------- */
 
 .list__header {
@@ -580,6 +601,15 @@ button {
   color: var(--muted);
   min-width: 40px;
   padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chip--ghost svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .chip:active {
@@ -729,8 +759,12 @@ button {
 }
 
 .empty__icon {
-  font-size: 40px;
-  opacity: 0.8;
+  opacity: 0.5;
+}
+
+.empty__icon svg {
+  width: 40px;
+  height: 40px;
 }
 
 .empty__text {

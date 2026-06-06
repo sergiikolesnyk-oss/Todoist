@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTasks } from '@/lib/store';
 import EmptyState from '@/components/EmptyState';
 import TaskControls from '@/components/TaskControls';
+import { CalendarIcon, CloseIcon } from '@/components/icons';
 import {
   todayISO,
   bucketFor,
@@ -60,7 +61,7 @@ export default function TodayPage() {
       </div>
 
       {!ready ? null : inBucket.length === 0 ? (
-        <EmptyState icon="🗓" text={EMPTY[tab]} />
+        <EmptyState icon={<CalendarIcon />} text={EMPTY[tab]} />
       ) : (
         <ul className="cards">
           {inBucket.map((task) => {
@@ -88,7 +89,7 @@ export default function TodayPage() {
                     onClick={() => removeTask(task.id)}
                     aria-label="Delete task"
                   >
-                    ✕
+                    <CloseIcon />
                   </button>
                 </div>
 
