@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type { ReactNode } from 'react';
+import { CaptureIcon, InboxIcon, CalendarIcon } from './icons';
 
-const tabs = [
-  { href: '/', label: 'Capture', icon: '✏️' },
-  { href: '/inbox', label: 'Inbox', icon: '📥' },
-  { href: '/today', label: 'Today', icon: '✅' },
+const tabs: { href: string; label: string; icon: ReactNode }[] = [
+  { href: '/', label: 'Capture', icon: <CaptureIcon /> },
+  { href: '/inbox', label: 'Inbox', icon: <InboxIcon /> },
+  { href: '/today', label: 'Today', icon: <CalendarIcon /> },
 ];
 
 export default function TabBar() {

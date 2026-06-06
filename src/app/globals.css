@@ -164,9 +164,14 @@ button {
 }
 
 .tab__icon {
-  font-size: 18px;
-  line-height: 1;
-  opacity: 0.85;
+  display: inline-flex;
+  opacity: 0.9;
+}
+
+.tab__icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .tab__label {
@@ -250,7 +255,6 @@ button {
   border: 1px solid var(--hair-strong);
   background: var(--panel-strong);
   color: var(--text);
-  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,6 +262,11 @@ button {
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
+}
+
+.mic svg {
+  width: 24px;
+  height: 24px;
 }
 
 .mic:active {

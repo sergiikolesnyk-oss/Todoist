@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTasks } from '@/lib/store';
 import { useSpeechInput, type SpeechLang } from '@/lib/useSpeechInput';
 import { parseCapture } from '@/lib/parseCapture';
+import { MicIcon } from '@/components/icons';
 
 const LANG_KEY = 'ai-planner.speechLang.v1';
 
@@ -120,7 +121,7 @@ export default function CapturePage() {
           disabled={micUnsupported}
           aria-label="Hold and speak"
         >
-          🎙️
+          <MicIcon />
         </button>
 
         <button
